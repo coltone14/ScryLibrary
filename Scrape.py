@@ -626,6 +626,9 @@ def get_hearthhead_articles():
 
 
 def get_articles():
+	
+	Article.articles_list.clear()	# clear list before because this is in a loop
+
 		### MTG Threads
 	t1 = threading.Thread(target = get_scg_articles)
 	t2 = threading.Thread(target = get_cfb_articles)	
@@ -693,4 +696,6 @@ def get_articles():
 	th5.join()
 	th6.join()
 	th7.join()
+
+	print('Data Collection Successful')
 	return Article.articles_list
