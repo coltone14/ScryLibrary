@@ -10,6 +10,20 @@
       <link href="{% static 'jumbotron-narrow.css' %}" rel="stylesheet">
       <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
       <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  <style>
+    table, th, td {
+        border: 1px solid grey;
+        padding: 5px;
+        text-align: center;
+        border-spacing: 5px;
+    }
+    div.container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    
+  </style>
 
   <body>
     <div class="container">
@@ -22,13 +36,13 @@
           </ul>
         </nav>
         <h3 class="text-muted">ScryLibrary</h3>
+
       </div>
 
       <div class="jumbotron">
-        <h1>ScryLibrary</h1>
-        <p class="lead">Recent Magic: The Gathering articles</p>
+        <h2>Recent Magic: The Gathering & Hearthstone Content</h2>
       </div>
-      <div class="container">
+      
         
           <table style="width:100%">
             <tr>
@@ -49,9 +63,9 @@
 
           
         
-      </div>
+      
       <footer class="footer">
-        <p>&copy; ScryLibrary, 2017 </p>
+        <p>&copy; ScryLibrary BETA, 2017 </p>
       </footer>
 
     </div>
