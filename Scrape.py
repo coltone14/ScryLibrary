@@ -10,7 +10,7 @@ class Article:
 
 	articles_list = []
 
-	def __init__(self, title, author, date, link, source, source_url, game, content_type, premium):
+	def __init__(self, title, author, date, link, source, source_url, game, premium):
 		self.title = title
 		self.author = author
 		self.date = format_date(date)
@@ -18,7 +18,6 @@ class Article:
 		self.source = source
 		self.source_url = source_url
 		self.game = game
-		self.content_type = content_type
 		self.premium = premium
 		Article.articles_list.append(self)
 
@@ -64,13 +63,14 @@ def get_wotc_articles():
 	for chunk in soup.find_all('item'):	
 		try:
 			title = chunk.find('title').text	# article title
-			if 'ROUND' in title:
+			# ignoring mid-tournament "articles" (round pairings, standings, results)
+			if 'round' in title.lower() and ('standings' or 'results' or 'pairings' in title.lower()):
 				continue
 			author = chunk.find('dc:creator').text.replace('By','').strip()	#author
 			date = chunk.find('pubdate').text		#date
-			link = "http://magic.wizards.com" +chunk.find('link').text	# article link
+			link = "http://magic.wizards.com" + chunk.find('link').text	# article link
 			
-			temp_article = Article(title, author, date, link, 'Wizards of the Coast', source_url, 'Magic: The Gathering', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'Wizards of the Coast', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting WOTC Article')
 
@@ -91,12 +91,8 @@ def get_cfb_articles():	# videos
 			author = chunk.find('dc:creator').text.strip()	#author
 			date = chunk.find('pubdate').text		#date
 
-			if '/articles/' in link:
-				content_type = 'Article'
-			elif '/videos/'	in link:
-				content_type = 'Video'
 			
-			temp_article = Article(title, author, date, link, 'Channel Fireball', source_url, 'Magic: The Gathering', content_type, 0)
+			temp_article = Article(title, author, date, link, 'Channel Fireball', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting CFB Article')
 
@@ -122,15 +118,9 @@ def get_scg_articles():	# videos
 				premium = 1
 			else:
 				premium = 0
+	
 
-			if '#Video' in chunk.find('aside').text:
-				content_type = 'Video'
-			elif '#Podcast' in chunk.find('aside').text:
-				content_type = 'Podcast'
-			else:
-				content_type = 'Article'	
-
-			temp_article = Article(title, author, date, link, 'StarCityGames', source_url, 'Magic: The Gathering', content_type, premium)	
+			temp_article = Article(title, author, date, link, 'StarCityGames', source_url, 'Magic: The Gathering', premium)	
 		except:
 			print ('Error Collecting SCG Article')
 
@@ -153,7 +143,7 @@ def get_tcg_articles():
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
 			
-			temp_article = Article(title, author, date, link, 'TCGPlayer', source_url, 'Magic: The Gathering', 'Article',0)	
+			temp_article = Article(title, author, date, link, 'TCGPlayer', source_url, 'Magic: The Gathering', 0)	
 		except:
 			print ('Error Collecting TCG Article')
 
@@ -173,15 +163,9 @@ def get_mtggf_articles():	# videos # podcasts
 			author = chunk.find('name').text.strip()	#author
 			date = chunk.find('published').text		#date
 			link = 	chunk.find('url').text		# article link
+	
 
-			if 'stream' in title.lower() or 'instant deck tech' in title.lower():
-				content_type = 'Video'
-			elif 'podcast' in title.lower():
-				content_type = 'Podcast'
-			else:
-				content_type = 'Article'	
-
-			temp_article = Article(title, author, date, link, 'MTG Goldfish', source_url, 'Magic: The Gathering', content_type, 0)	
+			temp_article = Article(title, author, date, link, 'MTG Goldfish', source_url, 'Magic: The Gathering', 0)	
 		except:
 			print ('Error Collecting MTGGF Article')
 
@@ -207,7 +191,7 @@ def get_mtgmc_articles():
 			date = date_and_day[0]		#omitting day
 			link = chunk.a.get('href')	# article link
 
-			temp_article = Article(title, author, date, link, 'MTG Mint Card', source_url, 'Magic: The Gathering', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'MTG Mint Card', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting MTGMC Article')		
 
@@ -226,20 +210,9 @@ def get_gm_articles():	# videos  # podcasts
 			author = chunk.find('dc:creator').text	#author
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
-			
-			category_list = chunk.find_all('category')
-			for category in category_list:
-				category = category.text.strip().lower()
-				if category == 'podcast':
-					content_type = 'Podcast'
-					break
-				elif category == 'video':
-					content_type = 'Video'
-					break
-				else:
-					content_type = 'Article'	
+				
 
-			temp_article = Article(title, author, date, link, 'Gathering Magic', source_url, 'Magic: The Gathering', content_type, 0)
+			temp_article = Article(title, author, date, link, 'Gathering Magic', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting GM Article')
 
@@ -259,19 +232,9 @@ def get_edhrec_articles(): #videos #podcasts
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
 
-			category_list = chunk.find_all('category')
-			for category in category_list:
-				category = category.text.strip().lower()
-				if category == 'articles':
-					content_type = 'Article'
-					break
-				elif category == 'podcast':
-					content_type = 'Podcast'
-					break
-				else:
-					content_type = 'Video'
 
-			temp_article = Article(title, author, date, link, 'EDHREC', source_url, 'Magic: The Gathering', content_type, 0)
+
+			temp_article = Article(title, author, date, link, 'EDHREC', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting EDHREC Article')
 
@@ -294,7 +257,7 @@ def get_edhrec_articles(): #videos #podcasts
 		link = "http://tappedout.net" + chunk.h2.a.get('href')	# article link
 
 		date = format_date(date)
-		articles[title] = [author, date, link, 'TappedOut', 'http://tappedout.net/', 'Magic: The Gathering', content_type]	# add dict entry
+		articles[title] = [author, date, link, 'TappedOut', 'http://tappedout.net/', 'Magic: The Gathering',]	# add dict entry
 	
 	return articles'''
 
@@ -314,7 +277,7 @@ def get_flipside_articles():
 			date = chunk.find('em').text	# article date
 			link = "https://www.flipsidegaming.com" + chunk.h2.a.get('href')	# article link
 			
-			temp_article = Article(title, author, date, link, 'FlipSide Gaming', source_url, 'Magic: The Gathering', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'FlipSide Gaming', source_url, 'Magic: The Gathering', 0)
 			
 		except:
 			continue 
@@ -323,7 +286,7 @@ def get_flipside_articles():
 
 def get_hareruya_articles():	# videos
 	source = "http://www.hareruyamtg.com/article/en/"
-	source_url = 'http://www.hareruyamtg.com/'
+	source_url = 'http://www.hareruyamtg.com/en/'
 	req = urllib.request.Request(source, headers={'User-Agent' : "Google Chrome"})
 	soup = make_soup(req, source)
 
@@ -339,18 +302,10 @@ def get_hareruya_articles():	# videos
 			link = chunk.a.get('href')	# article link
 
 			
-			cat_soup = chunk.find('ul', {'class':'data tag_container clearfix'})
-			for category in cat_soup.find_all('li'):
-				category = category.text.strip().lower()
-				if category == 'video':					
-					content_type = 'Video'
-					break
-				else:
-					content_type = 'Article'
 		except:
 			continue
 
-		temp_article = Article(title, author, date, link, 'HareruyaMTG', source_url, 'Magic: The Gathering', content_type, 0)
+		temp_article = Article(title, author, date, link, 'HareruyaMTG', source_url, 'Magic: The Gathering', 0)
 		
 
 def get_pucatrade_articles():
@@ -380,7 +335,7 @@ def get_pucatrade_articles():
 					link = 'https://pucatrade.com' + big_chunk.a.get('href')
 
 
-				temp_article = Article(title, author, date, link, 'Pucatrade', source_url, 'Magic: The Gathering', 'Article', 0)
+				temp_article = Article(title, author, date, link, 'Pucatrade', source_url, 'Magic: The Gathering', 0)
 			except:
 				print ('Error Collecting PT Article')
 
@@ -400,17 +355,8 @@ def get_legitmtg_articles():
 			date = chunk.p.find('time').text.strip()		#date
 			link = chunk.h1.a.get('href')	# article link
 
-			cat_soup = chunk.find('p', {'class':'meta'})
-			content_type = 'Article'
-			for category in cat_soup.find_all('a'):
-				category = category.text.strip().lower()
-				if category == 'multimedia':					
-					content_type = 'Video'
-				elif category == 'podcasts':
-					content_type = 'Podcast'
-					break	
 
-			temp_article = Article(title, author, date, link, 'Legit MTG', source_url, 'Magic: The Gathering', content_type, 0)
+			temp_article = Article(title, author, date, link, 'Legit MTG', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting LMTG Article')
 
@@ -436,10 +382,11 @@ def get_mtg1_articles():
 				continue
 			author = authsoup.find('div', {'class':'saboxplugin-authorname'}).a.text.strip()
 
-			temp_article = Article(title, author, date, link, 'MTG.ONE', source, 'Magic: The Gathering', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'MTG.ONE', source, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting MTG1 Article')
 
+# site down
 def get_cs_articles():
 	source = "http://commandersociety.com/feed/"
 	source_url = 'http://commandersociety.com/'
@@ -456,20 +403,52 @@ def get_cs_articles():
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
 
-			category_list = chunk.find_all('category')
-			for category in category_list:
-				category = category.text.strip().lower()
-				content_type = 'Article'	
-				if category == 'videos':
-					content_type = 'Video'
-					break
-				elif category == 'podcasts':
-					content_type = 'Podcast'
-					break
 
-			temp_article = Article(title, author, date, link, 'Commander Society', source_url, 'Magic: The Gathering', content_type, 0)
+
+			temp_article = Article(title, author, date, link, 'Commander Society', source_url, 'Magic: The Gathering', 0)
 		except:
 			print ('Error Collecting CS Article')
+
+def get_mluk_articles():
+	source = "http://www.manaleak.com/mtguk/feed/"
+	source_url = 'http://www.manaleak.com/mtguk/'
+	req = urllib.request.Request(source, headers={'User-Agent' : "Google Chrome"})
+	soup = make_soup(req, source)
+
+	if soup == False:
+		return
+
+	for chunk in soup.find_all('item'):	
+		try:
+			title = chunk.find('title').text	# article title
+			author = chunk.find('dc:creator').text	#author
+			date = chunk.find('pubdate').text		#date
+			link = chunk.find('link').text	# article link
+			title = title.replace(author, '').strip(' by ').strip(',')	# removing ", by [author] " from title
+
+			temp_article = Article(title, author, date, link, 'Mana Leak', source_url, 'Magic: The Gathering', 0)
+		except:
+			print ('Error Collecting MLUK Article')
+
+def get_mtgdt_articles():
+	source = "http://mtgdecktechs.com/category/articles/feed/"
+	source_url = 'http://mtgdecktechs.com/'
+	req = urllib.request.Request(source, headers={'User-Agent' : "Google Chrome"})
+	soup = make_soup(req, source)
+
+	if soup == False:
+		return
+
+	for chunk in soup.find_all('item'):	
+		try:
+			title = chunk.find('title').text	# article title
+			author = chunk.find('dc:creator').text	#author
+			date = chunk.find('pubdate').text		#date
+			link = chunk.find('link').text	# article link
+			
+			temp_article = Article(title, author, date, link, 'MTG DeckTechs', source_url, 'Magic: The Gathering', 0)
+		except:
+			print ('Error Collecting MTG DT Article')
 
 #######################################
 
@@ -491,15 +470,8 @@ def get_blizzpro_articles():
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
 
-			category_list = chunk.find_all('category')
-			for category in category_list:
-				category = category.text.strip().lower()
-				content_type = 'Article'	
-				if category == 'podcast':
-					content_type = 'Podcast'
-					break
 
-			temp_article = Article(title, author, date, link, 'BlizzPro', source_url, 'Hearthstone', content_type, 0)
+			temp_article = Article(title, author, date, link, 'BlizzPro', source_url, 'Hearthstone', 0)
 		except:
 			print ('Error Collecting BP Article')
 
@@ -512,29 +484,31 @@ def get_blizzard_articles():
 	if soup == False:
 		return
 
-	articles_chunk = soup.find('div', {'class':'articles'})			
+	articles_chunk = soup.find('ul', {'id':'blog-articles'})			
 	for chunk in articles_chunk.find_all('h3', {'class':'article-title'}):	
 		try:
 			title = chunk.a.text.strip()	# article title
 			link = chunk.a.get('href')	# article link
-			if 'playhearthstone' in link:			# non playhearthstone articles are ignored
+			link = 'https://playhearthstone.com' + link
+			'''if 'playhearthstone' in link:			# non playhearthstone articles are ignored
 				link = 'https://playhearthstone.com' + link
 			else:
-				continue
+				continue'''
 
 			#going deeper to get date and author
 			req2 = urllib.request.Request(link, headers={'User-Agent' : "Google Chrome"})
 			soup2 = make_soup(req2, link)
 
 			if soup2 == False:	#go to next article if error
+				print('Blizzard Article Error')
 				continue
 			else:
 				author = soup2.find('a', {'class':'article-author'}).text.strip()	#author
-				date = soup2.find('span', {'class':'publish-date'}).text		#date
+				date = soup2.find('time', {'class':'publish-date'}).text		#date
 			
-				temp_article = Article(title, author, date, link, 'Blizzard', source_url, 'Hearthstone', 'Article', 0)
+				temp_article = Article(title, author, date, link, 'Blizzard', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting BLZRD Article')
+			print ('Error Collecting BLIZZARD Article')
 
 def get_toast_articles():	# videos
 	source = "https://disguisedtoast.com/"
@@ -552,7 +526,7 @@ def get_toast_articles():	# videos
 			author = 'Disguised Toast'	#author
 			date = chunk.find('span', {'class':'dt-timestamp'}).text.replace('Published','').strip()		#date
 			
-			temp_article = Article(title, author, date, link, 'Disguised Toast', source_url, 'Hearthstone', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'Disguised Toast', source_url, 'Hearthstone', 0)
 		except:
 			print ('Error Collecting TOAST Article')
 
@@ -572,7 +546,7 @@ def get_hsplayers_articles():
 			date = chunk.find('pubdate').text		#date
 			link = chunk.find('link').text	# article link
 			
-			temp_article = Article(title, author, date, link, 'Hearthstone Players', source_url, 'Hearthstone', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'Hearthstone Players', source_url, 'Hearthstone', 0)
 		except:
 			print ('Error Collecting HSP Article')
 
@@ -595,7 +569,7 @@ def get_vs_articles():
 			if chunk.find('category').text.lower() == 'vs news':
 				continue	#ignore VS news posts
 			
-			temp_article = Article(title, author, date, link, 'Vicious Syndicate', source_url, 'Hearthstone', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'Vicious Syndicate', source_url, 'Hearthstone', 0)
 		except:
 			print ('Error Collecting VS Article')
 
@@ -617,13 +591,8 @@ def get_tempostorm_articles():	 # videos
 				premium = 1
 			else:
 				premium = 0	
-
-			if '[Video]' in item['description']:
-				content_type = 'Video'
-			else:
-				content_type = 'Article'
 			
-			temp_article = Article(title, author, date, link, 'Tempo Storm', source_url, 'Hearthstone', content_type, premium)
+			temp_article = Article(title, author, date, link, 'Tempo Storm', source_url, 'Hearthstone', premium)
 		except:
 			print ('Error Collecting TS Article')
 
@@ -643,9 +612,30 @@ def get_hearthhead_articles():
 			date = chunk.find('updated').text		#date
 			link = chunk.find('id').text	# article link
 			
-			temp_article = Article(title, author, date, link, 'Hearthhead', source_url, 'Hearthstone', 'Article', 0)
+			temp_article = Article(title, author, date, link, 'Hearthhead', source_url, 'Hearthstone', 0)
 		except:
 			print ('Error Collecting HH Article')
+
+def get_wildhs_articles():
+	source = "http://wildhs.com/feed/"
+	source_url = 'http://wildhs.com/'
+	req = urllib.request.Request(source, headers={'User-Agent' : "Google Chrome"})
+	soup = make_soup(req, source)
+
+	if soup == False:
+		return
+
+	for chunk in soup.find_all('item'):	
+		try:
+			title = chunk.find('title').text.strip()	# article title
+			author = chunk.find('dc:creator').text	#author
+			date = chunk.find('pubdate').text		#date
+			link = chunk.find('link').text	# article link
+
+			
+			temp_article = Article(title, author, date, link, 'Wild HS', source_url, 'Hearthstone', 0)
+		except:
+			print ('Error Collecting WildHS Article')
 
 def get_articles():
 	
@@ -665,8 +655,10 @@ def get_articles():
 	t11 = threading.Thread(target = get_pucatrade_articles)
 	t12 = threading.Thread(target = get_legitmtg_articles)
 	t13 = threading.Thread(target = get_mtg1_articles)
-	t14 = threading.Thread(target = get_cs_articles)
-	#### HS Threads
+	#t14 = threading.Thread(target = get_cs_articles)
+	t15 = threading.Thread(target = get_mluk_articles)
+	t16 = threading.Thread(target = get_mtgdt_articles)
+		#### HS Threads
 	th1 = threading.Thread(target = get_blizzpro_articles)
 	th2 = threading.Thread(target = get_blizzard_articles)
 	th3 = threading.Thread(target = get_toast_articles)
@@ -674,6 +666,7 @@ def get_articles():
 	th5 = threading.Thread(target = get_vs_articles)
 	th6 = threading.Thread(target = get_tempostorm_articles)
 	th7 = threading.Thread(target = get_hearthhead_articles)
+	th8 = threading.Thread(target = get_wildhs_articles)
 	#### Starting Threads
 	t1.start()
 	t2.start()
@@ -688,7 +681,9 @@ def get_articles():
 	t11.start()
 	t12.start()
 	t13.start()
-	t14.start()
+	#t14.start()
+	t15.start()
+	t16.start()
 	th1.start()
 	th2.start()
 	th3.start()
@@ -696,6 +691,7 @@ def get_articles():
 	th5.start()
 	th6.start()
 	th7.start()
+	th8.start()
 	### Joining threads
 	t1.join()
 	t2.join()
@@ -710,7 +706,9 @@ def get_articles():
 	t11.join()
 	t12.join()
 	t13.join()
-	t14.join()
+	#t14.join()
+	t15.join()
+	t16.join()
 	th1.join()
 	th2.join()
 	th3.join()
@@ -718,6 +716,8 @@ def get_articles():
 	th5.join()
 	th6.join()
 	th7.join()
+	th8.join()
 
 	print('Data Collection Successful')
 	return Article.articles_list
+

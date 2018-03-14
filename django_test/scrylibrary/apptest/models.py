@@ -8,7 +8,6 @@ class Article(models.Model):
     source = models.CharField(max_length=45)
     source_url = models.CharField(unique=True, max_length=60)
     game = models.CharField(max_length=45)
-    content_type = models.CharField(max_length=45)
     premium = models.CharField(max_length=1)    #binary
 
     def __str__(self):

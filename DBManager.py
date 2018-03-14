@@ -2,7 +2,7 @@ import pymysql
 
 
 
-def populate_db(articles_list):
+def populate_db(articles_list):	# insert/update articles
 	try:	#connect to database
 		connection = pymysql.connect(unix_socket='/var/run/mysqld/mysqld.sock',user='root',database='articles_test', charset='utf8')
 		print("Database Connection Successful")
@@ -18,18 +18,41 @@ def populate_db(articles_list):
 		source = article.source
 		source_url = article.source_url
 		game = article.game
-		content_type = article.content_type
 		premium = article.premium
 	
-		col_list = (title, author, _date, link, source, source_url, game, content_type, premium)	#correspond with database
+		col_list = (title, author, _date, link, source, source_url, game, premium)	#correspond with database
 		try:
 			with connection.cursor() as cursor:
         		# Create a new record
-				query = "INSERT INTO article values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % col_list 
-				cursor.execute(query + " ON DUPLICATE KEY UPDATE title = '%s', author = '%s', date = '%s', link = '%s', source = '%s', source_url = '%s', game = '%s', content_type = '%s', premium = '%s'" % col_list)
+				query = "INSERT INTO article values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % col_list 
+				cursor.execute(query + " ON DUPLICATE KEY UPDATE title = '%s', author = '%s', date = '%s', link = '%s', source = '%s', source_url = '%s', game = '%s', premium = '%s'" % col_list)
     			# connection is not autocommit by default. must commit to save changes
 			connection.commit()
 		except:
 			print("Error Inserting %s" % title)	
 	
 	connection.close()
+
+
+def prune_db(days):	# delete articles older than this amount of days
+
+	try:	#connect to database
+		connection = pymysql.connect(unix_socket='/var/run/mysqld/mysqld.sock',user='root',database='articles_test', charset='utf8')
+	except:
+		print("Connection Error")
+		return
+
+	try:
+		with connection.cursor() as cursor:
+        	# Create a new record
+			query = "DELETE FROM article WHERE UNIX_TIMESTAMP(date) < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %s DAY))" % days
+			cursor.execute(query)
+    		# connection is not autocommit by default. must commit to save changes
+			connection.commit()
+		print('Deleted articles older than %s days' % days)
+	
+	except:
+		print("Error Pruning Articles")
+
+	finally:
+		connection.close()
