@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% block head %}
+
+  {% endblock %}
+  {% load staticfiles %}
+      <link rel="icon" href="{% static 'favicon.ico' %}">
+      <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+      <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+      <link href="{% static 'jumbotron-narrow.css' %}" rel="stylesheet">
+      <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
+
+      <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+      <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+      <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+      
+      <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <style>
+    
+    div.container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .dataTables_length select {
+      background-color: white;
+    }
+    .dataTables_filter input {
+      background-color: white;
+    }
+    
+  </style>
+
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="{% url 'home' %}">Home</a></li>
+            <li role="presentation"><a href="{% url 'about' %}">About</a></li>
+            <li role="presentation"><a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">ScryLibrary</h3>
+
+      </div>
+
+      <div class="jumbotron">
+        <h2>Recent Magic: The Gathering & Hearthstone Content</h2>
+      </div>
+      
+        
+          <table id = "articles" style="width:100%">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Game</th>
+            </tr>
+            </thead>
+          <tbody>
+            {% block articles %}
+
+            {% endblock %}
+          </tbody>
+          </table>
+
+        <script type = "text/javascript">
+        $(document).ready(function() {
+          $('#articles').DataTable({
+            "order": [[2, 'desc']]
+          });
+        });
+        </script>
+      
+      <footer class="footer">
+        <p>&copy; ScryLibrary BETA, 2018 </p>
+      </footer>
+
+    </div>
+    </div>
+
+    
+  </body>
+</html>
