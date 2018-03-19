@@ -34,7 +34,7 @@ def make_soup(req, source_url):
 			soup = bs.BeautifulSoup(code, 'lxml')
 			return soup
 	except:
-		print("Error requesting " + source_url)
+		print("--Error requesting", source_url + '--')
 		return False
 
 
@@ -72,7 +72,7 @@ def get_wotc_articles():
 			
 			temp_article = Article(title, author, date, link, 'Wizards of the Coast', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting WOTC Article')
+			print ('--Error Collecting WOTC Article--')
 
 
 def get_cfb_articles():	# videos
@@ -94,7 +94,7 @@ def get_cfb_articles():	# videos
 			
 			temp_article = Article(title, author, date, link, 'Channel Fireball', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting CFB Article')
+			print ('--Error Collecting CFB Article--')
 
 
 
@@ -122,7 +122,7 @@ def get_scg_articles():	# videos
 
 			temp_article = Article(title, author, date, link, 'StarCityGames', source_url, 'Magic: The Gathering', premium)	
 		except:
-			print ('Error Collecting SCG Article')
+			print ('--Error Collecting SCG Article--')
 
 
 def get_tcg_articles():	
@@ -145,7 +145,7 @@ def get_tcg_articles():
 			
 			temp_article = Article(title, author, date, link, 'TCGPlayer', source_url, 'Magic: The Gathering', 0)	
 		except:
-			print ('Error Collecting TCG Article')
+			print ('--Error Collecting TCG Article--')
 
 
 def get_mtggf_articles():	# videos # podcasts
@@ -167,7 +167,7 @@ def get_mtggf_articles():	# videos # podcasts
 
 			temp_article = Article(title, author, date, link, 'MTG Goldfish', source_url, 'Magic: The Gathering', 0)	
 		except:
-			print ('Error Collecting MTGGF Article')
+			print ('--Error Collecting MTGGF Article--')
 
 
 def get_mtgmc_articles():
@@ -193,7 +193,7 @@ def get_mtgmc_articles():
 
 			temp_article = Article(title, author, date, link, 'MTG Mint Card', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting MTGMC Article')		
+			print ('--Error Collecting MTGMC Article--')		
 
 def get_gm_articles():	# videos  # podcasts
 	source = "http://www.gatheringmagic.com/feed/"
@@ -214,7 +214,7 @@ def get_gm_articles():	# videos  # podcasts
 
 			temp_article = Article(title, author, date, link, 'Gathering Magic', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting GM Article')
+			print ('--Error Collecting GM Article--')
 
 def get_edhrec_articles(): #videos #podcasts
 	source = "http://articles.edhrec.com/feed/"
@@ -236,7 +236,7 @@ def get_edhrec_articles(): #videos #podcasts
 
 			temp_article = Article(title, author, date, link, 'EDHREC', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting EDHREC Article')
+			print ('--Error Collecting EDHREC Article--')
 
 '''def get_tappedout_articles():
 	source = "http://tappedout.net/mtg-articles/"
@@ -337,7 +337,7 @@ def get_pucatrade_articles():
 
 				temp_article = Article(title, author, date, link, 'Pucatrade', source_url, 'Magic: The Gathering', 0)
 			except:
-				print ('Error Collecting PT Article')
+				print ('--Error Collecting PT Article--')
 
 def get_legitmtg_articles():
 	source = "http://legitmtg.com/"
@@ -358,7 +358,7 @@ def get_legitmtg_articles():
 
 			temp_article = Article(title, author, date, link, 'Legit MTG', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting LMTG Article')
+			print ('--Error Collecting LMTG Article--')
 
 def get_mtg1_articles():
 	source = "http://mtg.one/"
@@ -384,7 +384,7 @@ def get_mtg1_articles():
 
 			temp_article = Article(title, author, date, link, 'MTG.ONE', source, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting MTG1 Article')
+			print ('--Error Collecting MTG1 Article--')
 
 # site down
 def get_cs_articles():
@@ -407,7 +407,7 @@ def get_cs_articles():
 
 			temp_article = Article(title, author, date, link, 'Commander Society', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting CS Article')
+			print ('--Error Collecting CS Article--')
 
 def get_mluk_articles():
 	source = "http://www.manaleak.com/mtguk/feed/"
@@ -428,7 +428,7 @@ def get_mluk_articles():
 
 			temp_article = Article(title, author, date, link, 'Mana Leak', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting MLUK Article')
+			print ('--Error Collecting MLUK Article--')
 
 def get_mtgdt_articles():
 	source = "http://mtgdecktechs.com/category/articles/feed/"
@@ -448,7 +448,7 @@ def get_mtgdt_articles():
 			
 			temp_article = Article(title, author, date, link, 'MTG DeckTechs', source_url, 'Magic: The Gathering', 0)
 		except:
-			print ('Error Collecting MTG DT Article')
+			print ('--Error Collecting MTG DT Article--')
 
 #######################################
 
@@ -473,7 +473,7 @@ def get_blizzpro_articles():
 
 			temp_article = Article(title, author, date, link, 'BlizzPro', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting BP Article')
+			print ('--Error Collecting BP Article--')
 
 def get_blizzard_articles():
 	source = "https://playhearthstone.com/en-us/blog/"
@@ -508,7 +508,7 @@ def get_blizzard_articles():
 			
 				temp_article = Article(title, author, date, link, 'Blizzard', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting BLIZZARD Article')
+			print ('--Error Collecting BLIZZARD Article--')
 
 def get_toast_articles():	# videos
 	source = "https://disguisedtoast.com/"
@@ -528,7 +528,7 @@ def get_toast_articles():	# videos
 			
 			temp_article = Article(title, author, date, link, 'Disguised Toast', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting TOAST Article')
+			print ('--Error Collecting TOAST Article--')
 
 def get_hsplayers_articles():
 	source = "https://hearthstoneplayers.com/feed/"
@@ -548,7 +548,7 @@ def get_hsplayers_articles():
 			
 			temp_article = Article(title, author, date, link, 'Hearthstone Players', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting HSP Article')
+			print ('--Error Collecting HSP Article--')
 
 def get_vs_articles():
 	source = "https://www.vicioussyndicate.com/feed/"
@@ -571,7 +571,7 @@ def get_vs_articles():
 			
 			temp_article = Article(title, author, date, link, 'Vicious Syndicate', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting VS Article')
+			print ('--Error Collecting VS Article--')
 
 def get_tempostorm_articles():	 # videos
 	#json request
@@ -594,7 +594,7 @@ def get_tempostorm_articles():	 # videos
 			
 			temp_article = Article(title, author, date, link, 'Tempo Storm', source_url, 'Hearthstone', premium)
 		except:
-			print ('Error Collecting TS Article')
+			print ('--Error Collecting TS Article--')
 
 def get_hearthhead_articles():	
 	source = "http://www.hearthhead.com/feed.atom"
@@ -614,7 +614,7 @@ def get_hearthhead_articles():
 			
 			temp_article = Article(title, author, date, link, 'Hearthhead', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting HH Article')
+			print ('--Error Collecting HH Article--')
 
 def get_wildhs_articles():
 	source = "http://wildhs.com/feed/"
@@ -635,7 +635,7 @@ def get_wildhs_articles():
 			
 			temp_article = Article(title, author, date, link, 'Wild HS', source_url, 'Hearthstone', 0)
 		except:
-			print ('Error Collecting WildHS Article')
+			print ('--Error Collecting WildHS Article--')
 
 def get_articles():
 	

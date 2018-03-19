@@ -7,7 +7,7 @@ def populate_db(articles_list):	# insert/update articles
 		connection = pymysql.connect(unix_socket='/var/run/mysqld/mysqld.sock',user='root',database='articles_test', charset='utf8')
 		print("Database Connection Successful")
 	except:
-		print("Connection Error")
+		print("--Connection Error--")
 		return
 
 	for article in articles_list:
@@ -29,7 +29,7 @@ def populate_db(articles_list):	# insert/update articles
     			# connection is not autocommit by default. must commit to save changes
 			connection.commit()
 		except:
-			print("Error Inserting %s" % title)	
+			print("--Error Inserting %s" % title + '--')	
 	
 	connection.close()
 
@@ -39,7 +39,7 @@ def prune_db(days):	# delete articles older than this amount of days
 	try:	#connect to database
 		connection = pymysql.connect(unix_socket='/var/run/mysqld/mysqld.sock',user='root',database='articles_test', charset='utf8')
 	except:
-		print("Connection Error")
+		print("--Connection Error--")
 		return
 
 	try:
@@ -49,10 +49,9 @@ def prune_db(days):	# delete articles older than this amount of days
 			cursor.execute(query)
     		# connection is not autocommit by default. must commit to save changes
 			connection.commit()
-		print('Deleted articles older than %s days' % days)
 	
 	except:
-		print("Error Pruning Articles")
+		print("--Error Pruning Articles--")
 
 	finally:
 		connection.close()

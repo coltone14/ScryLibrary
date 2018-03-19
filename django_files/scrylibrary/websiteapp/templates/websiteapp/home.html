@@ -18,7 +18,7 @@
   <style>
     
     div.container {
-      max-width: 1000px;
+      max-width: 900px;
       margin: auto;
     }
 
@@ -38,7 +38,14 @@
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="{% url 'home' %}">Home</a></li>
             <li role="presentation"><a href="{% url 'about' %}">About</a></li>
-            <li role="presentation"><a href="{% url 'contact' %}">Contact</a></li>
+            <li role="presentation">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="7L9UTD22U66RU">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+              </form>
+             </li> 
           </ul>
         </nav>
         <h3 class="text-muted">ScryLibrary</h3>
@@ -46,7 +53,7 @@
       </div>
 
       <div class="jumbotron">
-        <h2>Recent Magic: The Gathering & Hearthstone Content</h2>
+        <h2><b>Welcome to ScryLibrary, the free <i>Hearthstone</i> and <i>Magic: The Gathering</i> content aggregator!</b></h2>
       </div>
       
         
@@ -76,7 +83,7 @@
         </script>
       
       <footer class="footer">
-        <p>&copy; ScryLibrary BETA, 2018 </p>
+        <p>&copy; ScryLibrary, 2018 </p>
       </footer>
 
     </div>

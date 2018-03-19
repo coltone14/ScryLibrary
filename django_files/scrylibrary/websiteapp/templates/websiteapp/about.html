@@ -11,6 +11,15 @@
       <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
       <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 
+<style>
+    
+    div.container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+  </style>
+
 <body>
     <div class="container">
       <div class="header clearfix">
@@ -18,19 +27,42 @@
           <ul class="nav nav-pills pull-right">
             <li role="presentation"><a href="{% url 'home' %}">Home</a></li>
             <li role="presentation" class="active"><a href="{% url 'about' %}">About</a></li>
-            <li role="presentation"><a href="{% url 'contact' %}">Contact</a></li>
+            <li role="presentation">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="7L9UTD22U66RU">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+              </form>
+             </li> 
           </ul>
         </nav>
         <h3 class="text-muted">ScryLibrary</h3>
 
       </div>
 
-      <p>
-      About
-      </p>
+    <p> <font>
+      ScryLibrary is a free <i>Hearthstone</i> and <i>Magic: The Gathering</i> article aggregator. <br>  
+      Data is gathered from dozens of content-producing websites and displayed in a filterable and sortable list. <br>
+      Being able to quickly search through a library of new articles will prove to be useful for casual and competitive players. <br>
+      Users are encouraged to visit the source websites of the content shown. <br> <br>
+
+      Due to the nature of the games (new cards/sets, rotating formats, bans/unbans), only content from the past 90 days is shown. <br> <br>
+
+      Have any questions, suggestions, concerns, or business inquiries? Contact us at <b>scrylibrary@gmail.com</b> <br> <br>
+
+      Donations are accepted and handled through PayPal. Ads and donations help us keep the website running and improve our service! <br> <br> <br>
+      </font>
+
+      <br>
+      ScryLibrary does not own, nor claim to own, any of the hyperlinked intellectual property outside of ScryLibrary.com. <br>
+      ScryLibrary is not affiliated with any of the content producers, websites, authors, or games mentioned. <br>
+      All data is gathered legally and is publicly available on the owners' websites. <br>
+      All other content belongs to ScryLibrary.
+    </p>
       
       <footer class="footer">
-        <p>&copy; ScryLibrary BETA, 2018 </p>
+        <p>&copy; ScryLibrary, 2018 </p>
       </footer>
 
     </div>
